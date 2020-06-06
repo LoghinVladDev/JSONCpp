@@ -14,6 +14,10 @@ int main(){
         test->putBoolean(true);
         test->putDouble(3.4);
         test->putFloat(3.5f);
+        test->putChar('z');
+        test->putString("test");
+        test->putInt(3);
+        test->putLong(5000000000000L);
 
         std::cout << test->toString();
     } catch (std::exception &e) {

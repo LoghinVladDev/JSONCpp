@@ -120,15 +120,15 @@ std::string JSONNode::toString() noexcept(false) {
 
     std::string nodeData;
     switch (this->dataType) {
-        case BOOLEAN    : nodeData = this->getBoolean() ? "true" : "false";     break;
-        case INTEGER    : nodeData = std::to_string(this->getInt());        break;
-        case FLOAT      : nodeData = std::to_string(this->getFloat());      break;
-        case STRING     : nodeData = this->getString();                         break;
-        case LONG       : nodeData = std::to_string(this->getLong());       break;
-        case CHAR       : nodeData = std::to_string(this->getChar());       break;
-        case DOUBLE     : nodeData = std::to_string(this->getDouble());     break;
-        case JSON_ARRAY : nodeData = this->getJSONArray().toString();           break;
-        case JSON_OBJECT: nodeData = this->getJSONObject().toString();          break;
+        case BOOLEAN    : nodeData = this->getBoolean() ? "true" : "false";         break;
+        case INTEGER    : nodeData = std::to_string(this->getInt());            break;
+        case FLOAT      : nodeData = std::to_string(this->getFloat());          break;
+        case STRING     : nodeData = "\"" + this->getString() + "\"";               break;
+        case LONG       : nodeData = std::to_string(this->getLong());           break;
+        case CHAR       : nodeData = "\"" + std::string() + this->getChar() + "\""; break;
+        case DOUBLE     : nodeData = std::to_string(this->getDouble());         break;
+        case JSON_ARRAY : nodeData = this->getJSONArray().toString();               break;
+        case JSON_OBJECT: nodeData = this->getJSONObject().toString();              break;
         case UNDEFINED  : throw JSONDataException();
     }
 
