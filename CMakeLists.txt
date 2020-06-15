@@ -14,7 +14,7 @@ add_executable(
 )
 
 add_executable(
-        nodeTest src/NodeTest.cpp
+        nodeTest configurations/NodeTest.cpp
         include/JSON.h
         src/JSON.cpp
         include/JSONNode.h
@@ -22,3 +22,35 @@ add_executable(
         include/JSONArray.h
         src/JSONArray.cpp
 )
+
+add_executable(
+        arrayTest configurations/arrayTest.cpp
+        include/JSON.h
+        src/JSON.cpp
+        include/JSONNode.h
+        src/JSONNode.cpp
+        include/JSONArray.h
+        src/JSONArray.cpp
+)
+
+add_executable(
+        objectTest configurations/objTest.cpp
+        include/JSON.h
+        src/JSON.cpp
+        include/JSONNode.h
+        src/JSONNode.cpp
+        include/JSONArray.h
+        src/JSONArray.cpp
+)
+
+add_executable(
+        parseTest configurations/parseTest.cpp
+        include/JSON.h
+        src/JSON.cpp
+        include/JSONNode.h
+        src/JSONNode.cpp
+        include/JSONArray.h
+        src/JSONArray.cpp
+)
+
+add_executable( sub3 probleme/bacNumere.cpp )

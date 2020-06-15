@@ -2,7 +2,7 @@
 // Created by vladl on 07/06/2020.
 //
 
-#include "../include/JSONNode.h"
+#include "../include/JSON.h"
 
 #include <iostream>
 
@@ -18,6 +18,7 @@ int main(){
         test->putString("test");
         test->putInt(3);
         test->putLong(5000000000000L);
+        test->putString("test");
 
         std::cout << test->toString();
     } catch (std::exception &e) {

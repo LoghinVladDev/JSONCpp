@@ -4,6 +4,9 @@
 #pragma once
 #include <string>
 #include <exception>
+
+class JSONArray;
+
 #include "JSON.h"
 #include "JSONArray.h"
 
@@ -11,16 +14,19 @@
 #define UNTITLED_JSONNODE_H
 
 class JSONDataException : public std::exception{
-    const char* what () const throw() {
+    const char* what () const noexcept override {
         return "Invalid JSON Data";
+    }
+};
+
+class JSONLabelException : public std::exception {
+    const char* what () const noexcept override {
+        return "JSON node must have label";
     }
 };
 
 class JSONNode{
 private:
-    JSONNode* next;
-    std::string label;
-
     enum dataTypes{
         STRING,
         INTEGER,
@@ -35,20 +41,25 @@ private:
     };
 
     dataTypes dataType;
-
+    std::string label;
     void* data;
 
 public :
     JSONNode();
+    JSONNode(const JSONNode&);
 
-    void putInt         (const int)         noexcept(true);
-    void putFloat       (const float)       noexcept(true);
-    void putDouble      (const double)      noexcept(true);
+    ~JSONNode();
+
+    inline dataTypes getDataType() noexcept(true) { return this->dataType; }
+
+    void putInt         (int)               noexcept(true);
+    void putFloat       (float)             noexcept(true);
+    void putDouble      (double)            noexcept(true);
     void putString      (const std::string&)noexcept(true);
     void putString      (const char*)       noexcept(true);
-    void putLong        (const long long)   noexcept(true);
-    void putChar        (const char)        noexcept(true);
-    void putBoolean     (const bool)        noexcept(true);
+    void putLong        (long long)         noexcept(true);
+    void putChar        (char)              noexcept(true);
+    void putBoolean     (bool)              noexcept(true);
     void putJSONObject  (const JSON&)       noexcept(true);
     void putJSONArray   (const JSONArray&)  noexcept(true);
 
@@ -62,8 +73,19 @@ public :
     JSON        getJSONObject   ()  noexcept(false);
     JSONArray   getJSONArray    ()  noexcept(false);
 
-    inline JSONNode*    getNext()               noexcept(true) { return this->next; }
-    inline void         setNext(JSONNode* node) noexcept(true) { this->next = node; }
+    int         getInt          ()  const   noexcept(false);
+    float       getFloat        ()  const   noexcept(false);
+    double      getDouble       ()  const   noexcept(false);
+    std::string getString       ()  const   noexcept(false);
+    long long   getLong         ()  const   noexcept(false);
+    char        getChar         ()  const   noexcept(false);
+    bool        getBoolean      ()  const   noexcept(false);
+    JSON        getJSONObject   ()  const   noexcept(false);
+    JSONArray   getJSONArray    ()  const   noexcept(false);
+
+    std::string getDataString() noexcept(false);
+
+    void* getData() const noexcept(false);
 
     inline void         setLabel(const std::string& objectLabel) noexcept(true) { this->label = objectLabel; }
     inline void         setLabel(const char* labelCStr)          noexcept(true) { this->label = std::string(labelCStr); }

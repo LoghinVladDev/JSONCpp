@@ -3,10 +3,8 @@
 //
 
 #include "../include/JSONNode.h"
-#include <cstring>
 
 JSONNode::JSONNode() {
-    this->next = nullptr;
     this->data = nullptr;
     this->dataType = dataTypes::UNDEFINED;
 }
@@ -115,22 +113,102 @@ JSONArray JSONNode::getJSONArray() noexcept(false) {
     return (*((JSONArray*)this->data));
 }
 
+int JSONNode::getInt() const noexcept(false) {
+    if(this->dataType != dataTypes::INTEGER)
+        throw JSONDataException();
+    return (*((int*)this->data));
+}
+
+float JSONNode::getFloat() const noexcept(false) {
+    if(this->dataType != dataTypes::FLOAT)
+        throw JSONDataException();
+    return (*((float*)this->data));
+}
+
+double JSONNode::getDouble() const noexcept(false) {
+    if(this->dataType != dataTypes::DOUBLE)
+        throw JSONDataException();
+    return (*((double*)this->data));
+}
+
+std::string JSONNode::getString() const noexcept(false) {
+    if(this->dataType != dataTypes::STRING)
+        throw JSONDataException();
+    return (*((std::string*)this->data));
+}
+
+long long JSONNode::getLong() const noexcept(false) {
+    if(this->dataType != dataTypes::LONG)
+        throw JSONDataException();
+    return (*((long long*)this->data));
+}
+
+char JSONNode::getChar() const noexcept(false) {
+    if(this->dataType != dataTypes::CHAR)
+        throw JSONDataException();
+    return (*((char*)this->data));
+}
+
+bool JSONNode::getBoolean() const noexcept(false) {
+    if(this->dataType != dataTypes::BOOLEAN)
+        throw JSONDataException();
+    return (*((bool*)this->data));
+}
+
+JSON JSONNode::getJSONObject() const noexcept(false) {
+    if(this->dataType != dataTypes::JSON_OBJECT)
+        throw JSONDataException();
+    return (*((JSON*)this->data));
+}
+
+JSONArray JSONNode::getJSONArray() const noexcept(false) {
+    if(this->dataType != dataTypes::JSON_ARRAY)
+        throw JSONDataException();
+    return (*((JSONArray*)this->data));
+}
+
 std::string JSONNode::toString() noexcept(false) {
-    std::string result = "{ \"" + this->label + "\" : ";
+    if(this->label.empty())
+        throw JSONLabelException();
+    return "\"" + this->label + "\" : " + this->getDataString();
+}
 
-    std::string nodeData;
-    switch (this->dataType) {
-        case BOOLEAN    : nodeData = this->getBoolean() ? "true" : "false";         break;
-        case INTEGER    : nodeData = std::to_string(this->getInt());            break;
-        case FLOAT      : nodeData = std::to_string(this->getFloat());          break;
-        case STRING     : nodeData = "\"" + this->getString() + "\"";               break;
-        case LONG       : nodeData = std::to_string(this->getLong());           break;
-        case CHAR       : nodeData = "\"" + std::string() + this->getChar() + "\""; break;
-        case DOUBLE     : nodeData = std::to_string(this->getDouble());         break;
-        case JSON_ARRAY : nodeData = this->getJSONArray().toString();               break;
-        case JSON_OBJECT: nodeData = this->getJSONObject().toString();              break;
-        case UNDEFINED  : throw JSONDataException();
+JSONNode::JSONNode(const JSONNode & otherNode) {
+    this->data      = otherNode.getData();
+    this->dataType  = otherNode.dataType;
+    this->label     = otherNode.label;
+}
+
+void *JSONNode::getData() const noexcept(false){
+    switch( this->dataType ){
+        case JSON_ARRAY     : return (void*) new JSONArray(this->getJSONArray());
+        case JSON_OBJECT    : return (void*) new JSON(this->getJSONObject());
+        case DOUBLE         : return (void*) new double(this->getDouble());
+        case FLOAT          : return (void*) new float(this->getFloat());
+        case CHAR           : return (void*) new char(this->getChar());
+        case LONG           : return (void*) new long long(this->getLong());
+        case STRING         : return (void*) new std::string(this->getString());
+        case INTEGER        : return (void*) new int(this->getInt());
+        case BOOLEAN        : return (void*) new bool(this->getBoolean());
+        default             : throw JSONDataException();
     }
+}
 
-    return result + nodeData + " }";
+JSONNode::~JSONNode() {
+    free(this->data);
+}
+
+std::string JSONNode::getDataString() noexcept(false) {
+    switch (this->dataType) {
+        case BOOLEAN    : return this->getBoolean() ? "true" : "false";
+        case INTEGER    : return std::to_string(this->getInt());
+        case FLOAT      : return std::to_string(this->getFloat());
+        case STRING     : return "\"" + this->getString() + "\"";
+        case LONG       : return std::to_string(this->getLong());
+        case CHAR       : return "\"" + std::string() + this->getChar() + "\"";
+        case DOUBLE     : return std::to_string(this->getDouble());
+        case JSON_ARRAY : return this->getJSONArray().toString();
+        case JSON_OBJECT: return this->getJSONObject().toString();
+        default         : throw JSONDataException();
+    }
 }
