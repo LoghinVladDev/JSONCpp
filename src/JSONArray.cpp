@@ -5,11 +5,11 @@
 #include <iostream>
 #include "../include/JSONArray.h"
 
-JSONArray::JSONArray() {
+JSONArray::JSONArray() noexcept (true){
     this->arrayList = new std::list<JSONNode>;
 }
 
-std::string JSONArray::toString() {
+std::string JSONArray::toString() noexcept (false){
     std::string res;
 
     for(auto & it : *this->arrayList){
@@ -26,15 +26,15 @@ std::string JSONArray::toString() {
     return "[" + res.replace(res.length() - 2, 2, "") + "]";
 }
 
-JSONArray::JSONArray(const JSONArray &other) {
+JSONArray::JSONArray(const JSONArray &other) noexcept (true) {
     this->arrayList = new std::list<JSONNode>( *other.arrayList );
 }
 
-JSONArray::~JSONArray() {
+JSONArray::~JSONArray()  noexcept (true){
     delete this->arrayList;
 }
 
-void JSONArray::put(int index, JSONNode & node) {
+JSONArray* JSONArray::put(int index, JSONNode & node) noexcept (true){
     if(index > this->arrayList->size())
         index = this->arrayList->size();
 
@@ -56,69 +56,80 @@ void JSONArray::put(int index, JSONNode & node) {
 
     delete this->arrayList;
     this->arrayList = front;
+    return this;
 }
 
-void JSONArray::put(int index, int value) {
+JSONArray* JSONArray::put(int index, int value) noexcept (true) {
     JSONNode inserted;
     inserted.putInt(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, bool value) {
+JSONArray* JSONArray::put(int index, bool value) noexcept (true) {
     JSONNode inserted;
     inserted.putBoolean(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, float value) {
+JSONArray* JSONArray::put(int index, float value) noexcept (true) {
     JSONNode inserted;
     inserted.putFloat(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, double value) {
+JSONArray* JSONArray::put(int index, double value) noexcept (true) {
     JSONNode inserted;
     inserted.putDouble(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, long long value) {
+JSONArray* JSONArray::put(int index, long long value) noexcept (true) {
     JSONNode inserted;
     inserted.putLong(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, const char * value) {
+JSONArray* JSONArray::put(int index, const char * value) noexcept (true) {
     JSONNode inserted;
     inserted.putString(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, const std::string & value) {
+JSONArray* JSONArray::put(int index, const std::string & value) noexcept (true) {
     JSONNode inserted;
     inserted.putString(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, const JSONArray & value) {
+JSONArray* JSONArray::put(int index, const JSONArray & value) noexcept (true) {
     JSONNode inserted;
     inserted.putJSONArray(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, const JSON & value) {
+JSONArray* JSONArray::put(int index, const JSON & value) noexcept (true) {
     JSONNode inserted;
     inserted.putJSONObject(value);
     this->put(index, inserted);
+    return this;
 }
 
-void JSONArray::put(int index, char value) {
+JSONArray* JSONArray::put(int index, char value) noexcept (true) {
     JSONNode inserted;
     inserted.putChar(value);
     this->put(index, inserted);
+    return this;
 }
 
-JSONNode JSONArray::get(int index) {
+JSONNode JSONArray::get(int index) noexcept (false) {
     if(index < 0 || index >= this->arrayList->size())
         throw JSONArrayOutOfBounds();
 
@@ -131,43 +142,43 @@ JSONNode JSONArray::get(int index) {
     throw JSONArrayOutOfBounds();
 }
 
-int JSONArray::getInt(int index) {
+int JSONArray::getInt(int index) noexcept (false) {
     return this->get(index).getInt();
 }
 
-bool JSONArray::getBoolean(int index) {
+bool JSONArray::getBoolean(int index) noexcept (false) {
     return this->get(index).getBoolean();
 }
 
-char JSONArray::getChar(int index) {
+char JSONArray::getChar(int index) noexcept (false) {
     return this->get(index).getChar();
 }
 
-float JSONArray::getFloat(int index) {
+float JSONArray::getFloat(int index) noexcept (false) {
     return this->get(index).getFloat();
 }
 
-double JSONArray::getDouble(int index) {
+double JSONArray::getDouble(int index) noexcept (false) {
     return this->get(index).getDouble();
 }
 
-long long JSONArray::getLong(int index) {
+long long JSONArray::getLong(int index) noexcept (false) {
     return this->get(index).getLong();
 }
 
-std::string JSONArray::getString(int index) {
+std::string JSONArray::getString(int index) noexcept (false) {
     return this->get(index).getString();
 }
 
-JSON JSONArray::getJSON(int index) {
+JSON JSONArray::getJSON(int index) noexcept (false) {
     return this->get(index).getJSONObject();
 }
 
-JSONArray JSONArray::getJSONArray(int index) {
+JSONArray JSONArray::getJSONArray(int index) noexcept (false) {
     return this->get(index).getJSONArray();
 }
 
-JSONArray JSONArray::parse(const std::string& data) {
+JSONArray JSONArray::parse(const std::string& data) noexcept (true) {
     JSONArray result;
     std::string copy = data;
     copy.replace(0, copy.find('[') + 1, "").replace(copy.rfind(']'), copy.length(), "");
@@ -208,7 +219,7 @@ JSONArray JSONArray::parse(const std::string& data) {
     return result;
 }
 
-void JSONArray::putMysteryData(const std::string & data) {
+JSONArray* JSONArray::putMysteryData(const std::string & data) noexcept (true) {
     if( data[0] == '{' )
         this->put(this->length(), JSON::parse(data));
     else if( data[0] == '[' )
@@ -226,4 +237,6 @@ void JSONArray::putMysteryData(const std::string & data) {
         this->put(this->length(), data == "true");
     else
         this->put( this->length(), (int)std::strtol(data.c_str(), nullptr, 10) );
+
+    return this;
 }

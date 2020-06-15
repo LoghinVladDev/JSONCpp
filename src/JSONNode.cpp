@@ -4,7 +4,7 @@
 
 #include "../include/JSONNode.h"
 
-JSONNode::JSONNode() {
+JSONNode::JSONNode() noexcept(true){
     this->data = nullptr;
     this->dataType = dataTypes::UNDEFINED;
 }
@@ -173,7 +173,7 @@ std::string JSONNode::toString() noexcept(false) {
     return "\"" + this->label + "\" : " + this->getDataString();
 }
 
-JSONNode::JSONNode(const JSONNode & otherNode) {
+JSONNode::JSONNode(const JSONNode & otherNode) noexcept(true){
     this->data      = otherNode.getData();
     this->dataType  = otherNode.dataType;
     this->label     = otherNode.label;
@@ -194,7 +194,7 @@ void *JSONNode::getData() const noexcept(false){
     }
 }
 
-JSONNode::~JSONNode() {
+JSONNode::~JSONNode() noexcept (true){
     free(this->data);
 }
 

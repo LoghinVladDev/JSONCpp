@@ -4,19 +4,19 @@
 #include <iostream>
 #include "../include/JSON.h"
 
-JSON::JSON() {
+JSON::JSON() noexcept (true){
     this->nodes = new std::list<JSONNode>;
 }
 
-JSON::JSON(const JSON &other) {
+JSON::JSON(const JSON &other) noexcept (true){
     this->nodes = new std::list<JSONNode> ( *other.nodes );
 }
 
-JSON::~JSON() {
+JSON::~JSON() noexcept (true){
     delete this->nodes;
 }
 
-std::string JSON::toString() {
+std::string JSON::toString() noexcept (false){
     std::string res;
 
     for ( auto & it : *this->nodes ) {
@@ -29,7 +29,7 @@ std::string JSON::toString() {
     return "{" + res.replace(res.length() - 2, 2, "") + "}";
 }
 
-JSON *JSON::put(const std::string & label, int data) {
+JSON *JSON::put(const std::string & label, int data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putInt(data);
@@ -39,7 +39,7 @@ JSON *JSON::put(const std::string & label, int data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, float data) {
+JSON *JSON::put(const std::string & label, float data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putFloat(data);
@@ -49,7 +49,7 @@ JSON *JSON::put(const std::string & label, float data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, double data) {
+JSON *JSON::put(const std::string & label, double data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putDouble(data);
@@ -59,7 +59,7 @@ JSON *JSON::put(const std::string & label, double data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, bool data) {
+JSON *JSON::put(const std::string & label, bool data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putBoolean(data);
@@ -69,7 +69,7 @@ JSON *JSON::put(const std::string & label, bool data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, char data) {
+JSON *JSON::put(const std::string & label, char data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putChar(data);
@@ -79,7 +79,7 @@ JSON *JSON::put(const std::string & label, char data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, long long data) {
+JSON *JSON::put(const std::string & label, long long data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putLong(data);
@@ -89,7 +89,7 @@ JSON *JSON::put(const std::string & label, long long data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, const JSON & data) {
+JSON *JSON::put(const std::string & label, const JSON & data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putJSONObject(data);
@@ -99,7 +99,7 @@ JSON *JSON::put(const std::string & label, const JSON & data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, const JSONArray & data) {
+JSON *JSON::put(const std::string & label, const JSONArray & data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putJSONArray(data);
@@ -109,7 +109,7 @@ JSON *JSON::put(const std::string & label, const JSONArray & data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, const std::string & data) {
+JSON *JSON::put(const std::string & label, const std::string & data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putString(data);
@@ -119,7 +119,7 @@ JSON *JSON::put(const std::string & label, const std::string & data) {
     return this;
 }
 
-JSON *JSON::put(const std::string & label, const char * data) {
+JSON *JSON::put(const std::string & label, const char * data) noexcept (true){
     JSONNode nodeData;
     nodeData.setLabel(label);
     nodeData.putString(data);
@@ -129,7 +129,7 @@ JSON *JSON::put(const std::string & label, const char * data) {
     return this;
 }
 
-int JSON::getInt(const std::string & label) {
+int JSON::getInt(const std::string & label) noexcept (false){
     for (auto &it : *this->nodes)
         if (it.getLabel() == label)
             return it.getInt();
@@ -137,7 +137,7 @@ int JSON::getInt(const std::string & label) {
     throw JSONNoDataException();
 }
 
-bool JSON::getBoolean(const std::string & label) {
+bool JSON::getBoolean(const std::string & label) noexcept (false){
     for (auto &it : *this->nodes)
         if (it.getLabel() == label)
             return it.getBoolean();
@@ -146,7 +146,7 @@ bool JSON::getBoolean(const std::string & label) {
     throw JSONNoDataException();
 }
 
-char JSON::getChar(const std::string & label) {
+char JSON::getChar(const std::string & label) noexcept (false){
     for (auto &it : *this->nodes)
         if (it.getLabel() == label)
             return it.getChar();
@@ -154,7 +154,7 @@ char JSON::getChar(const std::string & label) {
     throw JSONNoDataException();
 }
 
-float JSON::getFloat(const std::string & label) {
+float JSON::getFloat(const std::string & label) noexcept (false){
     for( auto & it : *this->nodes )
         if( it.getLabel() == label )
             return it.getFloat();
@@ -162,7 +162,7 @@ float JSON::getFloat(const std::string & label) {
     throw JSONNoDataException();
 }
 
-double JSON::getDouble(const std::string & label) {
+double JSON::getDouble(const std::string & label) noexcept (false){
     for( auto & it : *this->nodes )
         if( it.getLabel() == label )
             return it.getDouble();
@@ -170,7 +170,7 @@ double JSON::getDouble(const std::string & label) {
     throw JSONNoDataException();
 }
 
-long long JSON::getLong(const std::string & label) {
+long long JSON::getLong(const std::string & label) noexcept (false){
     for( auto & it : *this->nodes )
         if( it.getLabel() == label )
             return it.getLong();
@@ -178,7 +178,7 @@ long long JSON::getLong(const std::string & label) {
     throw JSONNoDataException();
 }
 
-std::string JSON::getString(const std::string & label) {
+std::string JSON::getString(const std::string & label) noexcept (false){
     for( auto & it : *this->nodes )
         if( it.getLabel() == label )
             return it.getString();
@@ -186,7 +186,7 @@ std::string JSON::getString(const std::string & label) {
     throw JSONNoDataException();
 }
 
-JSON JSON::getJSON(const std::string & label) {
+JSON JSON::getJSON(const std::string & label) noexcept (false){
     for( auto & it : *this->nodes )
         if( it.getLabel() == label )
             return it.getJSONObject();
@@ -194,7 +194,7 @@ JSON JSON::getJSON(const std::string & label) {
     throw JSONNoDataException();
 }
 
-JSONArray JSON::getJSONArray(const std::string & label) {
+JSONArray JSON::getJSONArray(const std::string & label) noexcept (false){
     for( auto & it : *this->nodes )
         if( it.getLabel() == label )
             return it.getJSONArray();
@@ -202,7 +202,7 @@ JSONArray JSON::getJSONArray(const std::string & label) {
     throw JSONNoDataException();
 }
 
-JSON JSON::parse(const std::string & jsonString) {
+JSON JSON::parse(const std::string & jsonString) noexcept (true){
     JSON result;
 
     std::string copy = jsonString;
@@ -254,7 +254,7 @@ JSON JSON::parse(const std::string & jsonString) {
     return result;
 }
 
-JSON *JSON::putMysteryData(const std::string & label, const std::string& data) {
+JSON *JSON::putMysteryData(const std::string & label, const std::string& data) noexcept (true) {
 //    std::cout << label << ' ' << data << '\n';
 
     if( data[0] == '{' )

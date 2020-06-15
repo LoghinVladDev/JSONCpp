@@ -45,10 +45,10 @@ private:
     void* data;
 
 public :
-    JSONNode();
-    JSONNode(const JSONNode&);
+    JSONNode()                  noexcept(true);
+    JSONNode(const JSONNode&)   noexcept(true);
 
-    ~JSONNode();
+    ~JSONNode()                 noexcept(true);
 
     inline dataTypes getDataType() noexcept(true) { return this->dataType; }
 

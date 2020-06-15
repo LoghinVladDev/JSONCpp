@@ -20,40 +20,40 @@ private:
     std::list<JSONNode> *arrayList = nullptr;
 
 public:
-    JSONArray();
-    JSONArray(const JSONArray&);
-    ~JSONArray();
+    JSONArray()                 noexcept (true);
+    JSONArray(const JSONArray&) noexcept (true);
+    ~JSONArray()                noexcept (true);
 
-    void putMysteryData(const std::string&);
+    JSONArray* putMysteryData(const std::string&) noexcept (true);
 
-    void put(int index, JSONNode&);
-    void put(int index, int);
-    void put(int index, bool);
-    void put(int index, char);
-    void put(int index, float);
-    void put(int index, double);
-    void put(int index, long long);
-    void put(int index, const char*);
-    void put(int index, const std::string&);
-    void put(int index, const JSONArray&);
-    void put(int index, const JSON&);
+    JSONArray* put(int index, JSONNode&)          noexcept (true);
+    JSONArray* put(int index, int)                noexcept (true);
+    JSONArray* put(int index, bool)               noexcept (true);
+    JSONArray* put(int index, char)               noexcept (true);
+    JSONArray* put(int index, float)              noexcept (true);
+    JSONArray* put(int index, double)             noexcept (true);
+    JSONArray* put(int index, long long)          noexcept (true);
+    JSONArray* put(int index, const char*)        noexcept (true);
+    JSONArray* put(int index, const std::string&) noexcept (true);
+    JSONArray* put(int index, const JSONArray&)   noexcept (true);
+    JSONArray* put(int index, const JSON&)        noexcept (true);
 
-    inline int length() { return this->arrayList->size(); }
+    inline int length() noexcept (true) { return this->arrayList->size(); }
 
-    JSONNode get(int);
-    int getInt(int);
-    bool getBoolean(int);
-    char getChar(int);
-    float getFloat(int);
-    double getDouble(int);
-    long long getLong(int);
-    std::string getString(int);
-    JSON getJSON(int);
-    JSONArray getJSONArray(int);
+    JSONNode    get(int)            noexcept (false);
+    int         getInt(int)         noexcept (false);
+    bool        getBoolean(int)     noexcept (false);
+    char        getChar(int)        noexcept (false);
+    float       getFloat(int)       noexcept (false);
+    double      getDouble(int)      noexcept (false);
+    long long   getLong(int)        noexcept (false);
+    std::string getString(int)      noexcept (false);
+    JSON        getJSON(int)        noexcept (false);
+    JSONArray   getJSONArray(int)   noexcept (false);
 
-    std::string toString();
+    std::string toString() noexcept (false);
 
-    static JSONArray parse(const std::string&);
+    static JSONArray parse(const std::string&) noexcept (true);
 };
 
 #endif //UNTITLED_JSONARRAY_H
